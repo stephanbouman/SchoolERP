@@ -394,6 +394,12 @@
                                             <p>Permissions</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('user_permission.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Users Permissions</p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         @endcan

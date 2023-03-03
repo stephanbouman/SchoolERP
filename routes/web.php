@@ -14,6 +14,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Gsuite;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LeaveManagementController;
+use App\Http\Controllers\UserPermissionsController;
 use App\Models\PublicEnquiry;
 use App\Models\UserInformation;
 
@@ -45,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Role & Permission
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    Route::resource('user_permission', UserPermissionsController::class);
 
     // General Access
     Route::get('/', [HomeController::class, 'home'])->name('index');
