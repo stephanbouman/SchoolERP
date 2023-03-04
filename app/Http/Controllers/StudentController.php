@@ -485,7 +485,7 @@ class StudentController extends Controller
                 $classes = StudentClass::whereNotIn('name', ['__NONE'])->get();
                 $sections = StudentSection::whereNotIn('name', ['__REMOVE', '__NOT-ASSIGNED'])->get();
                 $sections_id = DB::select("select id from student_sections where name not like('%/__%') escape '/'");
-//                dd($sections_id);
+
                 foreach ($classes as $cass) {
                     $data = (object)[
                         'class_name' => $cass->name,

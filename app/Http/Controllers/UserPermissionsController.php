@@ -42,17 +42,24 @@ class UserPermissionsController extends Controller
         } else return abort(404);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        if (Auth()->user()->can('role_edit')){
+        if (Auth()->user()->can('role_edit')) {
+
             $permissions = Permission::all()->pluck('name');
-            return view('user-permission.create')->with(['permissions' => $permissions,]);
-        } else return abort(404);
+
+            if ($request->ajax()) {
+                $users = User::limit(5)->select('id', 'first_name', 'middle_name', 'last_name', 'email', 'email_alternate')->get();
+                return Response(json_encode($users));
+            } else {
+                return view('user-permission.create')->with(['permissions' => $permissions,]);
+            }
+        } else return abort(403, "you don't have permission!");
     }
 
     public function store(Request $request)
     {
-        if (Auth()->user()->can('role_edit')){
+        if (Auth()->user()->can('role_edit')) {
             $request->validate([
                 'id' => 'required|integer',
                 'permissions' => 'required|string',
@@ -75,7 +82,7 @@ class UserPermissionsController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (Auth()->user()->can('role_edit')){
+        if (Auth()->user()->can('role_edit')) {
             $user = User::find($id);
             $user->syncPermissions($request->permissions);
             return Redirect::route('user_permission.index');

@@ -32,17 +32,14 @@
                                                             <label>Minimal</label>
                                                             <select
                                                                 class="form-control select2 @error('id') border border-danger @enderror"
-                                                                style="width: 100%;" name="id" placeholder="User">
-                                                                <option selected="selected">Alabama</option>
-                                                                <option>Alaska</option>
-                                                                <option>California</option>
-                                                                <option>Delaware</option>
-                                                                <option>Tennessee</option>
-                                                                <option>Texas</option>
-                                                                <option>Washington</option>
+                                                                id="input_data" style="width: 100%;" name="id"
+                                                                placeholder="User">
+                                                                <option value=""> User </option>
+                                                                <option value=""> Data </option>
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div id="input_dataD" class="col p-2 p2 bg-gray"></div>
                                                     <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                                         <div class="form-group">
                                                             <label>Permissions</label>
@@ -88,5 +85,53 @@
             //Initialize Select2 Elements
             $('.select2').select2()
         })
+    </script>
+@endpush
+
+@push('scripts')
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // $("#input_data").on('input', function(e) {
+        $("#input_data").select2({
+            placeholder: 'Select movie',
+
+            console.log("On change working.");
+
+            $("#input_data").empty();
+            e.preventDefault();
+            $("#input_data").empty();
+            var input_data = $("#input_data").val();
+
+            $.ajax({
+                type: 'get',
+                url: "{{ route('user_permission.create') }}",
+                data: {
+                    data: input_data
+                },
+                success: function(response) {
+                    console.log("Response working.");
+                    var data = $.parseJSON(response);
+                    $.each(data, function(key, value) {
+                        var sn_id = key += 1;
+                        $("#input_data").last().append(
+                            "<option value=" + value.id + " >" + value.id +
+                            "|" + value
+                            .first_name + " " + value.middle_name + " " + value
+                            .last_name +
+                            "|" + "</option>");
+                        // $("#input_dataD").last().append(
+                        //     "<div value=" + value.id + " >" + value.id + "|" + value
+                        //     .first_name + " " + value.middle_name + " " + value.last_name +
+                        //     "</div>");
+
+                    });
+                }
+            });
+        });
     </script>
 @endpush
