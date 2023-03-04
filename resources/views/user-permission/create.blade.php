@@ -12,7 +12,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Role Create</h3>
+                                <h3 class="card-title">Permission Assign</h3>
                                 <div class="card-title float-right">
                                     <a href="{{ route('user_permission.index') }}">
                                         <input type="button" value="User Permissions" class="btn btn-sm btn-warning">
@@ -32,9 +32,7 @@
                                                             <label>Minimal</label>
                                                             <select
                                                                 class="form-control select2 @error('id') border border-danger @enderror"
-                                                                style="width: 100%;"
-                                                                name="id"
-                                                                placeholder="User">
+                                                                style="width: 100%;" name="id" placeholder="User">
                                                                 <option selected="selected">Alabama</option>
                                                                 <option>Alaska</option>
                                                                 <option>California</option>
