@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('user_permission', UserPermissionsController::class);
+    Route::get('/user_permission_assign/data', [UserPermissionsController::class, 'userSearchForPermissionAssign']);
 
     // General Access
     Route::get('/', [HomeController::class, 'home'])->name('index');

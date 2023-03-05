@@ -45,16 +45,26 @@ class UserPermissionsController extends Controller
     public function create(Request $request)
     {
         if (Auth()->user()->can('role_edit')) {
-
             $permissions = Permission::all()->pluck('name');
-
-            if ($request->ajax()) {
-                $users = User::limit(5)->select('id', 'first_name', 'middle_name', 'last_name', 'email', 'email_alternate')->get();
-                return Response(json_encode($users));
-            } else {
-                return view('user-permission.create')->with(['permissions' => $permissions,]);
-            }
+            return view('user-permission.create')->with(['permissions' => $permissions,]);
         } else return abort(403, "you don't have permission!");
+    }
+
+    public function userSearchForPermissionAssign(Request $request)
+    {
+        if (Auth()->user()->can('role_edit')) {
+            $users = [];
+            if ($request->has('q')) {
+                $search = str_replace(" ", "%", $request->q);
+                $users = User::leftJoin('model_has_roles as mhr', 'users.id', 'mhr.model_id')
+                    ->leftJoin('roles as r', 'mhr.role_id', 'r.id')
+                    ->limit(5)
+                    ->select("users.id", "users.first_name", "users.middle_name", "users.last_name", "users.email", "users.email_alternate", "r.name as role_name")
+                    ->whereRaw("CONCAT_ws('', users.id, users.first_name, users.middle_name, users.last_name, users.father_name, users.mother_name, users.email, users.email_alternate, r.name)like '%" . $search . "%'")
+                    ->get();
+            }
+            return response()->json($users);
+        } else return abort(404);
     }
 
     public function store(Request $request)
@@ -62,7 +72,7 @@ class UserPermissionsController extends Controller
         if (Auth()->user()->can('role_edit')) {
             $request->validate([
                 'id' => 'required|integer',
-                'permissions' => 'required|string',
+                'permissions' => 'required',
             ]);
             $user = User::find($request->id);
             $user->syncPermissions($request->permissions);
