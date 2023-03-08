@@ -423,7 +423,7 @@
         <footer class="main-footer">
             {{-- To the right --}}
             <div class="float-right d-none d-sm-inline">
-                <b>Version</b> 3.2.0
+                <b>Version</b> Development
             </div>
             {{-- Default to the left --}}
             <strong>Copyright &copy; 2022-{{ date('Y') }} <a
