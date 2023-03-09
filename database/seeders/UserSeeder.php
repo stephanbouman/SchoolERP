@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'status'=>1,
             'created_by'=>1,
             'updated_by'=>1,
-            'email' => 'ivikee7@gmail.com',
+            'email' => 'user@domain.local',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10)
